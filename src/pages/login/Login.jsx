@@ -111,7 +111,7 @@ const Login = () => {
       setFetching(true);
 
       const res = await axios.post(
-        "http://exprestemplate.herokuapp.com/api/auth/login",
+        "https://exprestemplate.herokuapp.com/api/auth/login",
         userDetails
       );
       console.log(res.data);
