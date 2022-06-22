@@ -205,7 +205,7 @@ const Navbar = () => {
             <Link to="/register">Register</Link>
           </li>
           <li onClick={() => setIsNavExpanded(false)}>
-            <Link to="/">Contact</Link>
+            <Link to="/contact">Contact</Link>
           </li>
 
           {/* Uncomment this code below to add more items on the list */}
