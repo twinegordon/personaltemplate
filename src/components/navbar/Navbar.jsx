@@ -80,7 +80,7 @@ import { mobile } from "../../responsive";
 
 const Navbar = () => {
   const [isNavExpanded, setIsNavExpanded] = useState(false);
-  console.log(isNavExpanded);
+  // console.log(isNavExpanded);
 
   return (
     // <NavWrapper>

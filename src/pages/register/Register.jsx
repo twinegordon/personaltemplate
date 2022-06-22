@@ -1,5 +1,7 @@
 import styled from "styled-components";
+import { useRef, useState } from "react";
 import { mobile } from "../../responsive";
+import axios from "axios";
 
 const Container = styled.div`
   width: 100vw;
@@ -15,7 +17,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   ${mobile({
-      background: "none"
+    background: "none",
   })}
 `;
 
@@ -64,26 +66,64 @@ const Button = styled.button`
 `;
 
 const Register = () => {
+  const [user, setUser] = useState([]);
+
+  // Using useRef() hook
+  const firstnameRef = useRef();
+  const lastnameRef = useRef();
+  const emailRef = useRef();
+  const phoneRef = useRef();
+  const birthdayRef = useRef();
+  const passwordRef = useRef();
+  const usernameRef = useRef();
+
+  const registerUser = async (e) => {
+    e.preventDefault();
+    try {
+      const newUser = {
+        username: usernameRef.current.value,
+        firstName: firstnameRef.current.value,
+        lastName: lastnameRef.current.value,
+        email: emailRef.current.value,
+        birthday: birthdayRef.current.value,
+        phone: phoneRef.current.value,
+        profileImage: "test profile img",
+        coverImage: "test cover img",
+        password: passwordRef.current.value,
+      };
+
+      const res = await axios.post(
+        "http://localhost:8800/api/auth/register",
+        newUser
+      );
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <Container style={{
-        overflowX: "hidden"
-    }}>
+    <Container
+      style={{
+        overflowX: "hidden",
+      }}
+    >
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
         <Form>
-          <Input placeholder="First Name" />
-          <Input placeholder="Last Name" />
-          <Input placeholder="Username" />
-          <Input placeholder="Email" />
-          <Input placeholder="Phone" />
-          <Input placeholder="Birthday" type="date" />
-          <Input placeholder="password" />
-          <Input placeholder="confirm password" />
+          <Input placeholder="First Name" ref={firstnameRef} type="text" />
+          <Input placeholder="Last Name" ref={lastnameRef} />
+          <Input placeholder="Username" ref={usernameRef} />
+          <Input placeholder="Email" ref={emailRef} />
+          <Input placeholder="Phone" ref={phoneRef} />
+          <Input placeholder="Birthday" ref={birthdayRef} type="date" />
+          <Input placeholder="password" ref={passwordRef} />
+          {/* <Input placeholder="confirm password" ref={passwordRef} /> */}
           <Agreement>
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
           </Agreement>
-          <Button>REGISTER</Button>
+          <Button onClick={registerUser}>REGISTER</Button>
         </Form>
       </Wrapper>
     </Container>

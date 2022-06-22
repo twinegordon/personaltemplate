@@ -24,6 +24,7 @@
 .navigation-menu ul {
   display: flex;
   padding: 0;
+  margin-left: 20px;
 }
 
 .navigation-menu li {
