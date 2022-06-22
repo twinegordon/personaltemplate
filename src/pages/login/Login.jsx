@@ -1,3 +1,6 @@
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { mobile } from "../../responsive";
 
@@ -28,6 +31,20 @@ const Title = styled.h1`
   font-weight: 300;
 `;
 
+const ErrorComp = styled.div`
+  background-color: rgba(200, 0, 0, 0.4);
+  color: white;
+  padding: 15px;
+  width: 90%;
+`;
+
+const SuccessComp = styled.div`
+  background-color: rgba(0, 200, 0, 0.6);
+  color: white;
+  padding: 15px;
+  width: 90%;
+`;
+
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -49,7 +66,8 @@ const Button = styled.button`
   padding: 15px 20px;
   background-color: teal;
   color: white;
-  cursor: pointer;
+  cursor: ${(props) =>
+    props.disabled === "fetching" ? "not-allowed" : "pointer"};
   margin-bottom: 10px;
 `;
 
@@ -61,18 +79,82 @@ const Link = styled.a`
 `;
 
 const Login = () => {
-  const handleLogin = (e) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [fetching, setFetching] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setError(false);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setError(false);
+  };
+
+  const handleLogin = async (e) => {
     e.preventDefault();
+
+    try {
+      const userDetails = {
+        email,
+        password,
+      };
+
+      setFetching(true);
+
+      const res = await axios.post(
+        "http://exprestemplate.herokuapp.com/api/auth/login",
+        userDetails
+      );
+      console.log(res.data);
+      setEmail("");
+      setPassword("");
+      setSuccess(true);
+      setSuccessMessage("Success, redirecting ...");
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+
+      setFetching(false);
+    } catch (err) {
+      console.log(err);
+      setError(true);
+      setSuccess(false);
+      setFetching(false);
+      setErrorMessage("Sorry, something went wrong, try again");
+    }
   };
 
   return (
     <Container style={{ overflowX: "hidden" }}>
       <Wrapper>
         <Title>SIGN IN</Title>
-        <Form>
-          <Input type="email" placeholder="Email" />
-          <Input type="password" placeholder="password" />
-          <Button onClick={handleLogin}>LOGIN</Button>
+        {error && <ErrorComp>{errorMessage}</ErrorComp>}
+        {success && <SuccessComp>{successMessage}</SuccessComp>}
+        <Form onSubmit={handleLogin}>
+          <Input
+            type="email"
+            value={email}
+            onChange={handleEmailChange}
+            placeholder="Email"
+          />
+          <Input
+            type="password"
+            placeholder="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          <Button disabled={fetching}>
+            {fetching ? "Logging In" : "LOGIN"}
+          </Button>
           <Link>FORGOTTEN PASSWORD?</Link>
           <Link>CREATE A NEW ACCOUNT</Link>
         </Form>
