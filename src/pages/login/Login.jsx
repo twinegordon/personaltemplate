@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { login } from "../../redux/apiCalls";
 import { mobile } from "../../responsive";
 
 const Container = styled.div`
@@ -99,38 +101,44 @@ const Login = () => {
     setError(false);
   };
 
+  const dispatch = useDispatch()
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    try {
-      const userDetails = {
-        email,
-        password,
-      };
+    // Using redux ********************
+    login(dispatch, {email, password})
 
-      setFetching(true);
+    // Uncomment this code if you want to use useState or useRef for login state management*******
+    // try {
+    //   const userDetails = {
+    //     email,
+    //     password,
+    //   };
 
-      const res = await axios.post(
-        "https://exprestemplate.herokuapp.com/api/auth/login",
-        userDetails
-      );
-      console.log(res.data);
-      setEmail("");
-      setPassword("");
-      setSuccess(true);
-      setSuccessMessage("Success, redirecting ...");
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
+    //   setFetching(true);
 
-      setFetching(false);
-    } catch (err) {
-      console.log(err);
-      setError(true);
-      setSuccess(false);
-      setFetching(false);
-      setErrorMessage("Sorry, something went wrong, try again");
-    }
+    //   const res = await axios.post(
+    //     "https://exprestemplate.herokuapp.com/api/auth/login",
+    //     userDetails
+    //   );
+    //   console.log(res.data);
+    //   setEmail("");
+    //   setPassword("");
+    //   setSuccess(true);
+    //   setSuccessMessage("Success, redirecting ...");
+    //   setTimeout(() => {
+    //     navigate("/");
+    //   }, 2000);
+
+    //   setFetching(false);
+    // } catch (err) {
+    //   console.log(err);
+    //   setError(true);
+    //   setSuccess(false);
+    //   setFetching(false);
+    //   setErrorMessage("Sorry, something went wrong, try again");
+    // }
   };
 
   return (
