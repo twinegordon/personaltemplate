@@ -11,6 +11,7 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
+import registerSlice from "./registerSlice";
 
 const persistConfig = {
   key: "root",
@@ -23,6 +24,7 @@ const persistedReducer = persistReducer(persistConfig, userSlice);
 export const store = configureStore({
   reducer: {
     user: persistedReducer,
+    register: registerSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

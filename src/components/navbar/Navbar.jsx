@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+// import styled from "styled-components";
 import "./navbar.css";
 import { mobile } from "../../responsive";
 import { useDispatch, useSelector } from "react-redux";
@@ -86,8 +86,8 @@ const Navbar = () => {
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
-  
-console.log(user)
+
+  console.log(user);
   const handleClick = () => {
     setIsNavExpanded(false);
     dispatch(logOut());
@@ -210,14 +210,18 @@ console.log(user)
             <Link to="/">Services</Link>
           </li>
           <li onClick={() => setIsNavExpanded(false)}>
-            <Link to="/login">Login</Link>
-          </li>
-          <li onClick={() => setIsNavExpanded(false)}>
-            <Link to="/register">Register</Link>
-          </li>
-          <li onClick={() => setIsNavExpanded(false)}>
             <Link to="/">Contact</Link>
           </li>
+          {!user && (
+            <li onClick={() => setIsNavExpanded(false)}>
+              <Link to="/login">Login</Link>
+            </li>
+          )}
+          {!user && (
+            <li className="register" onClick={() => setIsNavExpanded(false)}>
+              <Link to="/register">Register</Link>
+            </li>
+          )}
           {user && (
             <li onClick={handleClick}>
               <Link to="/">Logout</Link>

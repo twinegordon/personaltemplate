@@ -113,27 +113,27 @@ const Login = () => {
 
     // Using redux ********************
     // Using cutom reducers******************
-    // login(dispatch, { email, password })
-    //   .then(() => {
-    //     console.log("Promise resolved");
-    //     setEmail("");
-    //     setPassword("");
-    //     setSuccess(true);
-    //     setSuccessMessage("Success, redirecting ...");
-    //     setTimeout(() => {
-    //       navigate("/");
-    //     }, 2000);
-    //   })
-    //   .catch((err) => {
-    //     console.log({ mesage: "There was an error", err });
-    //     setSuccess(false);
-    //     setError(true);
-    //     setErrorMessage("Sorry, something went wrong, try again");
-    //     setFetching(false);
-    //   });
+    login(dispatch, { email, password })
+      .then(() => {
+        console.log("Promise resolved");
+        setEmail("");
+        setPassword("");
+        setSuccess(true);
+        setSuccessMessage("Success, redirecting ...");
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      })
+      .catch((err) => {
+        console.log({ mesage: "There was an error", err });
+        setSuccess(false);
+        setError(true);
+        setErrorMessage("Sorry, something went wrong, try again");
+        setFetching(false);
+      });
 
-      // Using redux thunk
-      dispatch(newUser2({email,password}))
+    // Using redux thunk
+    // dispatch(newUser2({ email, password }));
 
     // Uncomment this code if you want to use useState or useRef for login state management*******
     // try {
@@ -171,7 +171,7 @@ const Login = () => {
     <Container style={{ overflowX: "hidden" }}>
       <Wrapper>
         <Title>SIGN IN</Title>
-        {error && <ErrorComp>{errorMessage}</ErrorComp>}
+        {Error && <ErrorComp>{errorMessage}</ErrorComp>}
         {success && <SuccessComp>{successMessage}</SuccessComp>}
         <Form onSubmit={handleLogin}>
           <Input

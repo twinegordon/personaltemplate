@@ -4,6 +4,9 @@ import { mobile } from "../../responsive";
 import axios from "axios";
 import { editableInputTypes } from "@testing-library/user-event/dist/utils";
 import { useNavigate } from "react-router-dom";
+import { registerNewUser } from "../../redux/apiCalls";
+import { useDispatch } from "react-redux";
+import { registerNewUser2 } from "../../redux/registerSlice";
 
 const Container = styled.div`
   width: 100vw;
@@ -90,52 +93,72 @@ const Register = () => {
 
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
   const registerUser = async (e) => {
     e.preventDefault();
-    try {
-      // Using useRef
-      //   const newUser = {
-      //     username: usernameRef.current.value,
-      //     firstName: firstnameRef.current.value,
-      //     lastName: lastnameRef.current.value,
-      //     email: emailRef.current.value,
-      //     birthday: birthdayRef.current.value,
-      //     phone: phoneRef.current.value,
-      //     profileImage: "test profile img",
-      //     coverImage: "test cover img",
-      //     password: passwordRef.current.value,
-      //   };
+    const newUser = {
+      username,
+      firstName: firstname,
+      lastName: lastname,
+      email,
+      birthday,
+      phone,
+      profileImage: "test profile img",
+      coverImage: "test cover img",
+      password,
+    };
 
-      //   Using useState
-      const newUser = {
-        username,
-        firstName: firstname,
-        lastName: lastname,
-        email,
-        birthday,
-        phone,
-        profileImage: "test profile img",
-        coverImage: "test cover img",
-        password,
-      };
+    // Using custom reducers
+    // registerNewUser(dispatch, newUser);
 
-      const res = await axios.post(
-        "http://localhost:8800/api/auth/register",
-        newUser
-      );
-      console.log(res.data);
-      setBirthday("");
-      setEmail("");
-      setUsername("");
-      setFirstname("");
-      setLastname("");
-      setPhone("");
-      setPassword("");
+    // using redux thunk
+    dispatch(registerNewUser2(newUser))
 
-      navigate("/login");
-    } catch (err) {
-      console.log(err);
-    }
+    // try {
+    //   // Using useRef
+    //   //   const newUser = {
+    //   //     username: usernameRef.current.value,
+    //   //     firstName: firstnameRef.current.value,
+    //   //     lastName: lastnameRef.current.value,
+    //   //     email: emailRef.current.value,
+    //   //     birthday: birthdayRef.current.value,
+    //   //     phone: phoneRef.current.value,
+    //   //     profileImage: "test profile img",
+    //   //     coverImage: "test cover img",
+    //   //     password: passwordRef.current.value,
+    //   //   };
+
+    //   //   Using useState
+    //   const newUser = {
+    //     username,
+    //     firstName: firstname,
+    //     lastName: lastname,
+    //     email,
+    //     birthday,
+    //     phone,
+    //     profileImage: "test profile img",
+    //     coverImage: "test cover img",
+    //     password,
+    //   };
+
+    //   const res = await axios.post(
+    //     "https://exprestemplate.herokuapp.com/api/auth/register",
+    //     newUser
+    //   );
+    //   console.log(res.data);
+    //   setBirthday("");
+    //   setEmail("");
+    //   setUsername("");
+    //   setFirstname("");
+    //   setLastname("");
+    //   setPhone("");
+    //   setPassword("");
+
+    //   navigate("/login");
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   return (
