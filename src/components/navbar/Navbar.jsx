@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import "./navbar.css";
 import { mobile } from "../../responsive";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../../redux/userSlice";
 
 // const NavWrapper = styled.nav`
 //   height: 60px;
@@ -81,6 +83,15 @@ import { mobile } from "../../responsive";
 const Navbar = () => {
   const [isNavExpanded, setIsNavExpanded] = useState(false);
   // console.log(isNavExpanded);
+
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.currentUser);
+  
+console.log(user)
+  const handleClick = () => {
+    setIsNavExpanded(false);
+    dispatch(logOut());
+  };
 
   return (
     // <NavWrapper>
@@ -161,7 +172,7 @@ const Navbar = () => {
 
     <nav className="navigation">
       <Link to="/" className="brand-name">
-        MacroSoft
+        MyTemplate
       </Link>
       <button
         onClick={() => setIsNavExpanded(!isNavExpanded)}
@@ -205,8 +216,13 @@ const Navbar = () => {
             <Link to="/register">Register</Link>
           </li>
           <li onClick={() => setIsNavExpanded(false)}>
-            <Link to="/contact">Contact</Link>
+            <Link to="/">Contact</Link>
           </li>
+          {user && (
+            <li onClick={handleClick}>
+              <Link to="/">Logout</Link>
+            </li>
+          )}
 
           {/* Uncomment this code below to add more items on the list */}
           {/*<li>
